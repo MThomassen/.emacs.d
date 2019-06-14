@@ -1,0 +1,19 @@
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+.\#*
+
+# Packages
+/elpa/
+
+# Projectiles files
+.projectile
+/projectile*
+
+# LSP files
+/.lsp*
+
+/tmp/*

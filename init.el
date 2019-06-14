@@ -20,12 +20,12 @@
       load-prefer-newer              t
       delete-old-versions            t
       gc-cons-threshold              20000000
-      shell-command-switch           "-ic"
+      shell-command-switch           "-c"
       temporary-file-directory       (expand-file-name "~/.emacs.d/tmp")
       backup-directory-alist         `((".*" . ,temporary-file-directory))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
       initial-frame-alist            '((tool-bar-lines . 0)
-				       (width . 160)
+				       (width . 180)
 				       (height . 50))
       initial-scratch-message        "Hi, Michiel!\n")
 
@@ -35,7 +35,10 @@
 (global-linum-mode)
 (global-auto-revert-mode)
 
-;; Packages
+;; Global Packages
+(use-package diminish
+  :ensure t)
+
 (use-package projectile
   :ensure t
   :init   (setq projectile-use-git-grep t)
@@ -45,8 +48,7 @@
 
 (use-package rainbow-delimiters
   :ensure t
-  :init   (progn
-            (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
+  :hook   (prog-mode . rainbow-delimiters-mode))
 
 (use-package highlight-symbol
   :ensure   t
@@ -59,25 +61,49 @@
   :commands magit-status magit-blame
   :bind     ("C-c g s" . magit-status))
 
+(use-package lsp-mode
+  :ensure   t
+  :commands lsp)
+
+(use-package lsp-ui
+  :ensure   t
+  :commands lsp-ui
+  :hook     (lsp-mode . lsp-ui-mode))
+
+(use-package company-lsp
+  :ensure   t
+  :commands company-lsp)
+
 (use-package company
   :ensure   t
   :diminish company-mode
-  :commands company-mode
-  :init     (global-company-mode)
-	    (setq
-              company-idle-delay            0
-              company-minimum-prefix-length 2))
+  :hook     (prog-mode . company-mode)
+  :init     (setq
+              company-idle-delay                0
+              company-minimum-prefix-length     2
+	      company-tooltip-align-annotations t)
+  :config   (push 'company-lsp company-backends))
 
 (use-package yasnippet
   :ensure   t
   :diminish yas-minor-mode
   :commands yas-minor-mode
+  :init     (yas-global-mode)
   :config   (yas-reload-all))
+
+(use-package yasnippet-snippets
+  :ensure t)
 
 (use-package flycheck
   :ensure   t
   :config   (global-flycheck-mode 1)
-  :diminish (flycheck-mode))
+  :diminish flycheck-mode)
+
+(use-package toml-mode
+  :ensure   t)
+
+;; language-specific
+(load-file "~/.emacs.d/rust.el")
 
 (provide 'init)
 ;;; init.el ends here
