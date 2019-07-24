@@ -1,4 +1,4 @@
-;;; init.el --- Emacs Initialization File
+;; init.el --- Emacs Initialization File
 ;;; Commentary:
 ;;; Code:
 
@@ -7,6 +7,7 @@
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("org-elpa" . "https://orgmode.org/elpa/"))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -34,6 +35,11 @@
 (column-number-mode)
 (global-linum-mode)
 (global-auto-revert-mode)
+
+;; Theme
+(use-package zenburn-theme
+  :ensure t
+  :init   (load-theme 'zenburn t))
 
 ;; Global Packages
 (use-package diminish
@@ -104,6 +110,8 @@
 
 ;; language-specific
 (load-file "~/.emacs.d/rust.el")
+
+(load-file "~/.emacs.d/python.el")
 
 (provide 'init)
 ;;; init.el ends here

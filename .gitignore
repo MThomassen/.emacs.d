@@ -15,5 +15,6 @@ auto-save-list
 
 # LSP files
 /.lsp*
+/mspyls/
 
 /tmp/*
